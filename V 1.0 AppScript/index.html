@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <style>
+		#body
+		{
+			margin-top: 50px; 
+			width: 80%;
+			background-color: white;
+		}
+
+		#bg
+		{
+			background-color: rgb(252, 220, 220);
+		}
+
+		.btn-custom
+		{
+			height: 80px;
+			width: 300px;
+			padding-bottom: 50px; 
+		}
+
+		#message
+		{
+			padding-bottom: 40px; 
+		}
+
+		#time
+		{
+			padding-top: 50px; 
+			padding-bottom: 20px; 
+		}
+		
+		#inputfields
+		{
+			padding-bottom: 50px; 
+		}
+		
+		#button
+		{
+			background-color: rgb(219, 250, 218); 
+		}
+	</style>
+			<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+	<script>
+    // JavaScript Document
+		let start = 0; 
+		let elapsed = 0; 
+		let machine_running = false;
+		
+		function clickButton()
+		{
+			var button = document.getElementById("button");
+			if(machine_running == true)
+			{
+				if(formsEmpty())
+				{
+					alert("Forms are empty. Please fill forms.");
+				}else
+				{
+					button.innerHTML = "Start";
+					button.style.backgroundColor = "rgb(219, 250, 218)";
+					machine_running = false; 
+					clickStop(); 
+				}
+			}else if(machine_running == false)
+			{
+				button.innerHTML = "Stop";
+				button.style.backgroundColor = "rgb(252, 220, 220)";
+				machine_running = true; 
+				clickStart(); 
+			}
+		}
+		
+		function clickStart()
+		{
+			document.getElementById("bg").style.backgroundColor = "rgb(219, 250, 218)";
+			document.getElementById("message").innerHTML = "Coffee Machine Initiated";
+			start = Date.now(); 
+			google.script.run.startTime(); 
+		}
+
+		function formsEmpty()
+		{
+			var batches = document.getElementById("batches").value;
+			var weight = document.getElementById("weight").value; 
+			if(batches.length == 0 || weight.length == 0)
+			{
+				return true; 		
+			}
+			return false; 
+		}
+		
+		function clickStop()
+		{
+			var batches = document.getElementById("batches").value;
+			var weight = document.getElementById("weight").value; 
+
+			elapsed = Date.now(0);
+			var timeElapsed = msToTime(elapsed - start);
+
+			document.getElementById("message").innerHTML = "Coffee Machine Stopped";
+			document.getElementById("bg").style.backgroundColor = "rgb(252, 220, 220)";
+			document.getElementById("time").innerHTML = "Time Elapsed: " + timeElapsed; 
+			
+		    google.script.run.endTime(timeElapsed, batches, weight); 
+		}
+
+		function msToTime(duration) {
+		  var milliseconds = parseInt((duration % 1000) / 100),
+			seconds = Math.floor((duration / 1000) % 60),
+			minutes = Math.floor((duration / (1000 * 60)) % 60),
+			hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+		  hours = (hours < 10) ? "0" + hours : hours;
+		  minutes = (minutes < 10) ? "0" + minutes : minutes;
+		  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+		  return hours + ":" + minutes + ":" + seconds + "." + milliseconds + " (hh:mm:ss)";
+		}
+    </script>
+	  
+  </head>
+	
+  <body id="bg">
+	<center>
+		<div id="body">
+			<h1 id="time"></h1>
+			<h2 id="message">Coffee Machine Stopped</h2>
+			<button type="button" style="margin-bottom: 50px;" class="btn-custom btn" id="button" onClick="clickButton();">Start</button>
+			
+			<div id="inputfields">
+				<h4>Batches</h4>
+				<input type="text" id="batches">
+				<h4>Weight</h4>
+				<input type="text" id="weight">
+			</div>
+			
+		</div>
+	</center>  
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+	
+	
+  </body>
+	
+	
+	
+	
+</html>
